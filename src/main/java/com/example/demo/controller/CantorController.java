@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.entity.Cantor;
 import com.example.demo.model.service.CantorService;
+import com.example.demo.model.service.CantorAsyncService_Ana;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,15 @@ public class CantorController {
     @Autowired
     private CantorService cantorService;
 
+    @Autowired
+    private CantorAsyncService_Ana asyncService;
+
     @PostMapping("/novo")
     public ResponseEntity<Boolean> criarCantor(@RequestBody Cantor cantor) {
         cantorService.criarCantor(cantor);
+
+        asyncService.processarCantor(cantor.getNome());
+
         return ResponseEntity.status(201).body(true);
     }
 
